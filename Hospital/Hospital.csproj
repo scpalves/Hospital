@@ -214,7 +214,7 @@
     <Compile Include="ViewModel\MedicoViewModel.cs" />
     <Compile Include="ViewModel\PrescricaoViewModel.cs" />
     <Compile Include="ViewModel\ServicosViewModel.cs" />
-    <Compile Include="ViewModel\Tratamento.cs" />
+    <Compile Include="ViewModel\TratamentoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -238,6 +238,17 @@
     </Content>
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Medico\Index.cshtml" />
+    <Content Include="Views\Tratamento\Index.cshtml" />
+    <Content Include="Views\Tratamento\TratamentoForm.cshtml" />
+    <Content Include="Views\Tratamento\Delete.cshtml" />
+    <Content Include="Views\Tratamento\Details.cshtml" />
+    <Content Include="Views\Servicos\Index.cshtml" />
+    <Content Include="Views\Servicos\Delete.cshtml" />
+    <Content Include="Views\Servicos\Details.cshtml" />
+    <Content Include="Views\Servicos\ServicosForm.cshtml" />
+    <Content Include="Views\Cama\Index.cshtml" />
+    <Content Include="Views\Cama\CamaForm.cshtml" />
+    <Content Include="Views\Cama\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -247,9 +258,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Cama\" />
-    <Folder Include="Views\Servicos\" />
-    <Folder Include="Views\Tratamento\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
