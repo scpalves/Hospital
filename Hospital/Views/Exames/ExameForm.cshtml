@@ -1,0 +1,42 @@
+﻿@model  Hospital.ViewModel.ExamesViewModel
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<h2>@Model.Title</h2>
+
+
+@using (@Html.BeginForm("Save", "Exames"))
+{
+    @Html.ValidationSummary(true, "Resolva os seguintes erros")
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Preco)
+        @Html.TextBoxFor(m => m.Preco, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Preco)
+    </div>
+
+
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+}
+@*@section scripts
+{
+   @System.Web.Optimization.Scripts.Render("~/bundles/jqueryval")
+
+}*@

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Hospital.Models.Medico>
+
+@{
+    ViewBag.Title = "AllMedicos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AllMedicos</h2>
+
+<p>
+    @Html.ActionLink("Médicos Activos", "Index", "Medico", null, new { @class = "btn btn-primary" })
+</p>
+
+<p>
+   @Html.ActionLink("Médicos Inactivos", "MedicosInactivos", "Medico", null, new { @class = "btn btn-primary" })
+</p>
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact)
+            </td>
+             <td>
+                 @Html.CheckBoxFor(modelItem => item.Status.Value, new { @disabled = "disabled" })
+                 
+            </td>
+
+   
+        </tr>
+    }
+
+</table>

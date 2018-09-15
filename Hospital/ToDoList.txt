@@ -1,0 +1,33 @@
+﻿List Of Tasks
+Completed
+1.	Create solution with all projects - 
+2.	Create BOL with Entity Framework - 
+3.	Add Connection string in UI - 
+4.	Create Areas in MVC - 
+	a.	Admin
+	b.	Security
+5.	Create All Controllers in Respective Areas - 
+6.	Add Default index views - 
+7.	Add Bootstrap - 
+8.	Create BrowseUrl View - 
+9.	Create Common Layout - 
+10. Create DAL  - 
+  a. Add UrlDb  - 
+11. Create BLL  - 
+  a. Add UrlBs  - 
+12. Update BrowseUrl Controller - 
+13. Update BrowseUrl View - 
+14.	Sorting - 
+15. Paging - 
+16. ListCategory, ListUser with Sorting And Paging - 
+17. CreateCategory & Create SubmitUrl Controller - 
+18. Form Validations in BOL for CreateCategory - 
+19. Form Validations in BOL for SubmitUrl - 
+20. Custom validation in BOL for SubmitUrl - 
+21. Adding Baseclasses - 
+22. ApproveUrls And UserRegistration - 
+23. Authentication Filter in Global File-  
+24. Creating Custom Membership Providers -  (We need to add two dlls i.e.,System.Configuration and System.Web.ApplicationServices)
+25. Authorization -  
+26. Creating Custom Role Providers - 
+27. Applying a free bootstrap theme  - 

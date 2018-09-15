@@ -1,0 +1,52 @@
+﻿@model  Hospital.ViewModel.EnfermeiroViewModel
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<h2>@Model.Title</h2>
+
+
+@using (@Html.BeginForm("Save", "Enfermeiro"))
+{
+    @Html.ValidationSummary(true, "Resolva os seguintes erros")
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FirstName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LastName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Contact)
+        @Html.TextBoxFor(m => m.Contact, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Contact)
+    </div>
+
+
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+
+}
+@*@section scripts
+{
+   @System.Web.Optimization.Scripts.Render("~/bundles/jqueryval")
+
+}*@
