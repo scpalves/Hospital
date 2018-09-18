@@ -2,235 +2,337 @@
 using Hospital.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace Hospital.Controllers
 {
-    public class EnfermeiroController : Controller
-    {
-      private HospitalEntities _context;
+	public class EnfermeiroController : Controller
+	{
+		private HospitalEntities _context;
+
+		private EnfermeiroCrud db;
+
+		public EnfermeiroController()
+		{
+			_context = new HospitalEntities();
+
+			db = new EnfermeiroCrud();
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			_context.Dispose();
+		}
+
+		// GET: Medico
+		public ActionResult Index(string SortOrder, string SortBy, string Page)
+		{
+			ViewBag.SortOrder = SortOrder;
+			ViewBag.SortBy = SortBy;
+			var enfermeiro = _context.Enfermeiro.ToList().Where(w => w.Status == true);
+
+			switch (SortBy)
+			{
+				case "FirstName":
+					switch (SortOrder)
+					{
+						case "Asc":
+							enfermeiro = enfermeiro.OrderBy(x => x.FirstName).ToList();
+							break;
+						case "Desc":
+							enfermeiro = enfermeiro.OrderByDescending(x => x.FirstName).ToList();
+							break;
+						default:
+
+							break;
 
-      public EnfermeiroController()
-        {
-            _context= new HospitalEntities();
-        }
+					}
+					break;
 
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-        }
+				case "LastName":
+					switch (SortOrder)
+					{
+						case "Asc":
+							enfermeiro = enfermeiro.OrderBy(x => x.LastName).ToList();
+							break;
+						case "Desc":
+							enfermeiro = enfermeiro.OrderByDescending(x => x.LastName).ToList();
+							break;
+						default:
 
-        // GET: Medico
-        public ActionResult Index()
-        {
-            var enfermeiro = _context.Enfermeiro.ToList().Where(w => w.Status == true);
+							break;
 
-            if (enfermeiro == null)
-             return HttpNotFound();
+					}
 
-            return View(enfermeiro);
-        }
+					break;
 
+				case "Email":
+					switch (SortOrder)
+					{
+						case "Asc":
+							enfermeiro = enfermeiro.OrderBy(x => x.Email).ToList();
+							break;
+						case "Desc":
+							enfermeiro = enfermeiro.OrderByDescending(x => x.Email).ToList();
+							break;
+						default:
 
-        public ActionResult AllEnfermeiros()
-        {
-            var enfermeiro = _context.Enfermeiro.ToList();
+							break;
 
-            if (enfermeiro == null)
-                return HttpNotFound();
+					}
+					break;
 
-            return View(enfermeiro);
-        }
 
-    
+				case "Contact":
+					switch (SortOrder)
+					{
+						case "Asc":
+							enfermeiro = enfermeiro.OrderBy(x => x.Contact).ToList();
+							break;
+						case "Desc":
+							enfermeiro = enfermeiro.OrderByDescending(x => x.Contact).ToList();
+							break;
+						default:
 
+							break;
+
+					}
+					break;
 
-        public ActionResult EnfermeiroInactivo()
-        {
 
-            var enfermeiro = _context.Enfermeiro.ToList().Where(w => w.Status == false);
+				case "Status":
+					switch (SortOrder)
+					{
+						case "Asc":
+							enfermeiro = enfermeiro.OrderBy(x => x.Status).ToList();
+							break;
+						case "Desc":
+							enfermeiro = enfermeiro.OrderByDescending(x => x.Status).ToList();
+							break;
+						default:
 
-            return View(enfermeiro);
-        }
+							break;
 
-        public ActionResult New()
-        {
+					}
+					break;
 
-            var viewModel = new EnfermeiroViewModel()
-            {
+				default:
+					enfermeiro = enfermeiro.OrderBy(x => x.FirstName).ToList();
 
-            };
-            return View("EnfermeiroForm", viewModel);
-        }
+					break;
 
+	
+			}
 
+			ViewBag.TotalPages = Math.Ceiling(db.GetAll().Where(x => x.Status == true).Count()/10.0);
+			int page = int.Parse(Page == null ? "1" : Page);
+			ViewBag.Page = page;
+			enfermeiro = enfermeiro.Skip((page - 1)*10).Take(10);
+			return View(enfermeiro);
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Save(Enfermeiro enfermeiro)
-        {
-            if (!ModelState.IsValid)
-            {
-                var viewModel = new EnfermeiroViewModel(enfermeiro)
-                {
 
-                };
-                return View("EnfermeiroForm", viewModel);
-            }
+		public ActionResult AllEnfermeiros()
+		{
+			var enfermeiro = _context.Enfermeiro.ToList();
 
-            if (enfermeiro.Id == 0)
-            {
-                enfermeiro.Status = true;
-                _context.Enfermeiro.Add(enfermeiro);
+			if (enfermeiro == null)
+				return HttpNotFound();
 
-            }
-            else
-            {
-                enfermeiro.Status = true;
-                var enfermeiroInBD = _context.Enfermeiro.Single(c => c.Id == enfermeiro.Id);
+			return View(enfermeiro);
+		}
 
-                enfermeiroInBD.FirstName = enfermeiro.FirstName;
-                enfermeiroInBD.LastName = enfermeiro.LastName;
-                enfermeiroInBD.Email = enfermeiro.Email;
-                enfermeiroInBD.Contact = enfermeiro.Contact;
-                enfermeiroInBD.Status = enfermeiro.Status;
-            }
 
-            _context.SaveChanges();
 
 
+		public ActionResult EnfermeiroInactivo()
+		{
 
-            return RedirectToAction("Index", "Enfermeiro");
-        }
+			var enfermeiro = _context.Enfermeiro.ToList().Where(w => w.Status == false);
 
+			return View(enfermeiro);
+		}
 
-        public ActionResult Edit(int id)
-        {
-            var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
+		public ActionResult New()
+		{
 
-            if (enfermeiro == null)
-                return HttpNotFound();
+			var viewModel = new EnfermeiroViewModel()
+			{
 
-            var viewModel = new EnfermeiroViewModel(enfermeiro)
-            {
+			};
+			return View("EnfermeiroForm", viewModel);
+		}
 
-            };
-            return View("EnfermeiroForm", viewModel);
-        }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveDelete(Enfermeiro enfermeiro)
-        {
-            if (!ModelState.IsValid)
-            {
-                var viewModel = new EnfermeiroViewModel(enfermeiro)
-                {
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Save(Enfermeiro enfermeiro)
+		{
+			if (!ModelState.IsValid)
+			{
+				var viewModel = new EnfermeiroViewModel(enfermeiro)
+				{
 
-                };
-                return View("Delete", viewModel);
-            }
+				};
+				return View("EnfermeiroForm", viewModel);
+			}
 
-            enfermeiro.Status = false;
-            var enfermeiroInBD = _context.Enfermeiro.Single(c => c.Id == enfermeiro.Id);
+			if (enfermeiro.Id == 0)
+			{
+				enfermeiro.Status = true;
+				_context.Enfermeiro.Add(enfermeiro);
 
-            enfermeiroInBD.FirstName = enfermeiro.FirstName;
-            enfermeiroInBD.LastName = enfermeiro.LastName;
-            enfermeiroInBD.Email = enfermeiro.Email;
-            enfermeiroInBD.Contact = enfermeiro.Contact;
-            enfermeiroInBD.Status = enfermeiro.Status;
-           
+			}
+			else
+			{
+				enfermeiro.Status = true;
+				var enfermeiroInBD = _context.Enfermeiro.Single(c => c.Id == enfermeiro.Id);
 
-            _context.SaveChanges();
+				enfermeiroInBD.FirstName = enfermeiro.FirstName;
+				enfermeiroInBD.LastName = enfermeiro.LastName;
+				enfermeiroInBD.Email = enfermeiro.Email;
+				enfermeiroInBD.Contact = enfermeiro.Contact;
+				enfermeiroInBD.Status = enfermeiro.Status;
+			}
 
+			_context.SaveChanges();
 
 
-            return RedirectToAction("Index", "Enfermeiro");
-        }
 
+			return RedirectToAction("Index", "Enfermeiro");
+		}
 
 
+		public ActionResult Edit(int id)
+		{
+			var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
 
+			if (enfermeiro == null)
+				return HttpNotFound();
 
-        public ActionResult Delete(int id)
-        {
-            var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
+			var viewModel = new EnfermeiroViewModel(enfermeiro)
+			{
 
-            if (enfermeiro == null)
-                return HttpNotFound();
+			};
+			return View("EnfermeiroForm", viewModel);
+		}
 
-            var viewModel = new EnfermeiroViewModel(enfermeiro)
-            {
 
-            };
-            return View("Delete", viewModel);
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult SaveDelete(Enfermeiro enfermeiro)
+		{
+			if (!ModelState.IsValid)
+			{
+				var viewModel = new EnfermeiroViewModel(enfermeiro)
+				{
 
+				};
+				return View("Delete", viewModel);
+			}
 
+			enfermeiro.Status = false;
+			var enfermeiroInBD = _context.Enfermeiro.Single(c => c.Id == enfermeiro.Id);
 
+			enfermeiroInBD.FirstName = enfermeiro.FirstName;
+			enfermeiroInBD.LastName = enfermeiro.LastName;
+			enfermeiroInBD.Email = enfermeiro.Email;
+			enfermeiroInBD.Contact = enfermeiro.Contact;
+			enfermeiroInBD.Status = enfermeiro.Status;
 
 
+			_context.SaveChanges();
 
 
-        public ActionResult Details(int id)
-        {
-            var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
 
-            if (enfermeiro == null)
-                return HttpNotFound();
+			return RedirectToAction("Index", "Enfermeiro");
+		}
 
-            return View(enfermeiro);
-        }
 
 
 
 
-        //public ActionResult Delete(int id)
-        //{
+		public ActionResult Delete(int id)
+		{
+			var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
 
+			if (enfermeiro == null)
+				return HttpNotFound();
 
-        //    var medico = _context.Medico.SingleOrDefault(c => c.Id == id);
+			var viewModel = new EnfermeiroViewModel(enfermeiro)
+			{
 
-        //            if (medico == null)
-        //        return HttpNotFound();
+			};
+			return View("Delete", viewModel);
+		}
 
-        //    var viewModel = new MedicoViewModel(medico)
-        //    {
 
-        //    };
-        //    return View("Delete", viewModel);
-        //}
 
 
 
 
-        //public ActionResult Delete(int id)
-        //{
 
-          
-        //    var medico = _context.Medico.SingleOrDefault(c => c.Id == id);
-            
-        //     medico.Status =  false;
+		public ActionResult Details(int id)
+		{
+			var enfermeiro = _context.Enfermeiro.SingleOrDefault(c => c.Id == id);
 
-        //     _context.Entry(medico).State = EntityState.Modified;
+			if (enfermeiro == null)
+				return HttpNotFound();
 
-        //     _context.SaveChanges();
-        //    if (medico == null)
-        //        return HttpNotFound();
+			return View(enfermeiro);
+		}
 
-        //    var viewModel = new MedicoViewModel(medico)
-        //    {
-                
-        //    };
-        //    return View("Delete", viewModel);
-        //}
 
 
 
+		//public ActionResult Delete(int id)
+		//{
 
 
-    }
+		//    var medico = _context.Medico.SingleOrDefault(c => c.Id == id);
+
+		//            if (medico == null)
+		//        return HttpNotFound();
+
+		//    var viewModel = new MedicoViewModel(medico)
+		//    {
+
+		//    };
+		//    return View("Delete", viewModel);
+		//}
+
+
+
+
+		//public ActionResult Delete(int id)
+		//{
+
+
+		//    var medico = _context.Medico.SingleOrDefault(c => c.Id == id);
+
+		//     medico.Status =  false;
+
+		//     _context.Entry(medico).State = EntityState.Modified;
+
+		//     _context.SaveChanges();
+		//    if (medico == null)
+		//        return HttpNotFound();
+
+		//    var viewModel = new MedicoViewModel(medico)
+		//    {
+
+		//    };
+		//    return View("Delete", viewModel);
+		//}
+
+
+
+
+
+	}
 }

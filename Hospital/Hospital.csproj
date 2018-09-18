@@ -118,7 +118,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="ToDoList.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Medico\MedicoForm.cshtml" />
     <Content Include="Views\Medico\Details.cshtml" />
@@ -162,6 +164,7 @@
     <Compile Include="Models\Enfermeiro.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EnfermeiroCrud.cs" />
     <Compile Include="Models\Exame.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

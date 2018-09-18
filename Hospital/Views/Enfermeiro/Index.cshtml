@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Hospital.Models.Enfermeiro>
+﻿@using System.Data.SqlClient
+@model IEnumerable<Hospital.Models.Enfermeiro>
 
 @{
     ViewBag.Title = "Index";
@@ -22,17 +23,19 @@
 
 <table class="table">
     <tr>
+		<th>
+			@Html.ActionLink("FirstName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "FirstName", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+		</th>
+	    <th>
+		    @Html.ActionLink("LastName","Index",new {SortOrder=(ViewBag.SortOrder == null ? "Asc":(ViewBag.SortOrder=="Asc"?"Desc":"Asc")),SortBy="LastName",page=(ViewBag.Page==null ? "1":ViewBag.Page)})
+	    </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+			@Html.ActionLink("Email", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Email", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+	
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Contact)
+          @Html.ActionLink("Contact", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Contact", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+
         </th>
 
         <th></th>
@@ -62,3 +65,25 @@
 }
 
 </table>
+
+@{
+    double TotalPage = @ViewBag.TotalPages;
+	}
+
+	<ul class="pagination">
+		@for (int i = 1; i <= TotalPage; i++)
+		{
+
+			if (i == ViewBag.Page)
+			{
+				<li class="active"> @Html.ActionLink(i.ToString() + " ", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder), SortBy = (ViewBag.SortBy == null ? "FirstName" : ViewBag.SortBy), Page = i })</li>
+			}
+			else
+			{
+				<li>
+					@Html.ActionLink(i.ToString() + " ", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : ViewBag.SortOrder), SortBy = (ViewBag.SortBy == null ? "FirstName" : ViewBag.SortBy), Page = i })
+				</li>
+			}
+
+		}
+	</ul>
