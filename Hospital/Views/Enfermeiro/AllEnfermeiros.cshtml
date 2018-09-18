@@ -5,19 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AllEnfermeiros</h2>
+<h2>Todos Enfermeiros</h2>
 
 <p>
     @Html.ActionLink("Enfermeiros Activos", "Index", "Enfermeiro", null, new { @class = "btn btn-primary" })
-</p>
-
-<p>
-   @Html.ActionLink("Enfermeiros Inactivos", "EnfermeiroInactivo", "Enfermeiro", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Enfermeiros Inactivos", "EnfermeiroInactivo", "Enfermeiro", null, new { @class = "btn btn-primary" })
 </p>
 
 
 
-<table class="table">
+
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -54,12 +52,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Contact)
             </td>
-             <td>
-                 @Html.CheckBoxFor(modelItem => item.Status.Value, new { @disabled = "disabled" })
-                 
+            <td>
+                @Html.CheckBoxFor(modelItem => item.Status.Value, new { @disabled = "disabled" })
+
             </td>
 
-   
+
         </tr>
     }
 
