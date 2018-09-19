@@ -16,6 +16,8 @@ namespace Hospital.Controllers
 
 		private EnfermeiroCrud db;
 
+
+
 		public EnfermeiroController()
 		{
 			_context = new HospitalEntities();
@@ -52,7 +54,6 @@ namespace Hospital.Controllers
 			if (!String.IsNullOrEmpty(SearchString))
 			{
 				enfermeiro = _context.Enfermeiro.Where(s => s.FirstName.ToUpper().Contains(SearchString.ToUpper()));
-				//|| s.RecomendadoPor.ToUpper().Contains(searchString.ToUpper()));
 
 			}
 

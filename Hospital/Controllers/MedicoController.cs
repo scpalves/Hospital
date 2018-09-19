@@ -13,26 +13,151 @@ namespace Hospital.Controllers
     {
         private HospitalEntities _context;
 
-        public MedicoController()
-        {
-            _context= new HospitalEntities();
-        }
+        private MedicoCrud db;
+
+       public MedicoController()
+		{
+			_context = new HospitalEntities();
+
+			db = new MedicoCrud();
+		}
 
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
         }
 
-        // GET: Medico
-        public ActionResult Index()
-        {
-            var medico = _context.Medico.ToList().Where(w => w.Status == true);
-                                     
-            if (medico == null)
-             return HttpNotFound();
+ 
 
-            return View( medico);
+
+        public ActionResult Index(string SortOrder, string SortBy, string Page, string SearchString, int? pages, string currentFilter)
+        {
+            ViewBag.SortOrder = SortOrder;
+            ViewBag.SortBy = SortBy;
+            var medico = _context.Medico.ToList().Where(w => w.Status == true);
+
+
+
+            if (SearchString != null)
+            {
+                pages = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = SearchString;
+
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                medico = _context.Medico.Where(s => s.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+
+            }
+
+
+
+            switch (SortBy)
+            {
+                case "FirstName":
+                    switch (SortOrder)
+                    {
+                        case "Asc":
+                            medico = medico.OrderBy(x => x.FirstName).ToList();
+                            break;
+                        case "Desc":
+                            medico = medico.OrderByDescending(x => x.FirstName).ToList();
+                            break;
+                        default:
+
+                            break;
+
+                    }
+                    break;
+
+                case "LastName":
+                    switch (SortOrder)
+                    {
+                        case "Asc":
+                            medico = medico.OrderBy(x => x.LastName).ToList();
+                            break;
+                        case "Desc":
+                            medico = medico.OrderByDescending(x => x.LastName).ToList();
+                            break;
+                        default:
+
+                            break;
+
+                    }
+
+                    break;
+
+                case "Email":
+                    switch (SortOrder)
+                    {
+                        case "Asc":
+                            medico = medico.OrderBy(x => x.Email).ToList();
+                            break;
+                        case "Desc":
+                            medico = medico.OrderByDescending(x => x.Email).ToList();
+                            break;
+                        default:
+
+                            break;
+
+                    }
+                    break;
+
+
+                case "Contact":
+                    switch (SortOrder)
+                    {
+                        case "Asc":
+                            medico = medico.OrderBy(x => x.Contact).ToList();
+                            break;
+                        case "Desc":
+                            medico = medico.OrderByDescending(x => x.Contact).ToList();
+                            break;
+                        default:
+
+                            break;
+
+                    }
+                    break;
+
+
+                case "Status":
+                    switch (SortOrder)
+                    {
+                        case "Asc":
+                            medico = medico.OrderBy(x => x.Status).ToList();
+                            break;
+                        case "Desc":
+                            medico = medico.OrderByDescending(x => x.Status).ToList();
+                            break;
+                        default:
+
+                            break;
+
+                    }
+                    break;
+
+                default:
+                    medico = medico.OrderBy(x => x.FirstName).ToList();
+
+                    break;
+
+
+            }
+
+            ViewBag.TotalPages = Math.Ceiling(db.GetAll().Where(x => x.Status == true).Count() / 10.0);
+            int page = int.Parse(Page == null ? "1" : Page);
+            ViewBag.Page = page;
+            medico = medico.Skip((page - 1) * 10).Take(10);
+            return View(medico);
         }
+
 
 
         public ActionResult AllMedicos()
