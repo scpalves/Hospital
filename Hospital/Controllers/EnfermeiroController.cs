@@ -29,11 +29,34 @@ namespace Hospital.Controllers
 		}
 
 		// GET: Medico
-		public ActionResult Index(string SortOrder, string SortBy, string Page)
+		public ActionResult Index(string SortOrder, string SortBy, string Page, string SearchString, int? pages, string currentFilter)
 		{
 			ViewBag.SortOrder = SortOrder;
 			ViewBag.SortBy = SortBy;
 			var enfermeiro = _context.Enfermeiro.ToList().Where(w => w.Status == true);
+
+
+
+			if (SearchString != null)
+			{
+				pages = 1;
+			}
+			else
+			{
+				SearchString = currentFilter;
+			}
+
+			ViewBag.CurrentFilter = SearchString;
+
+
+			if (!String.IsNullOrEmpty(SearchString))
+			{
+				enfermeiro = _context.Enfermeiro.Where(s => s.FirstName.ToUpper().Contains(SearchString.ToUpper()));
+				//|| s.RecomendadoPor.ToUpper().Contains(searchString.ToUpper()));
+
+			}
+
+
 
 			switch (SortBy)
 			{
