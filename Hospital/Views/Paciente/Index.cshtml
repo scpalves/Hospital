@@ -1,24 +1,21 @@
-﻿@model IEnumerable<Hospital.Models.Enfermeiro>
+﻿@model IEnumerable<Hospital.Models.Paciente>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Enfermeiros Activos</h2>
+<h2>Pacientes</h2>
 <br />
 <p>
-    @Html.ActionLink("New Enfermeiro", "New", "Enfermeiro", null, new { @class = "btn btn-warning" })
-
-    @Html.ActionLink("Médicos Inactivos", "EnfermeiroInactivo", "Enfermeiro", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Todos", "AllEnfermeiros", "Enfermeiro", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Novo Paciente", "New", "Paciente", null, new { @class = "btn btn-warning" })
 </p>
 <br />
-@using (Html.BeginForm("Index", "Enfermeiro", FormMethod.Get))
+@using (Html.BeginForm("Index", "Paciente", FormMethod.Get))
 {
 
 	<div class="form-actions">
-		<h4>Pesquisar Enfermeiro:</h4> @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+		<h4>Pesquisar Paciente:</h4> @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
 		<button type="submit" class="btn btn-primary">Pesquisar </button>
 
 	</div>
@@ -40,6 +37,10 @@
             @Html.ActionLink("Contact", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Contact", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
 
         </th>
+        <th>
+            @Html.ActionLink("Genero", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Genero", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
+
+        </th>
 
         <th></th>
     </tr>
@@ -59,11 +60,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Contact)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.Genero)
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
             </td>
         </tr>
     }

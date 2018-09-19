@@ -26,7 +26,7 @@
 }
 <br />
 
-    <table class="table table-hover">
+    <table class="table table-responsive table-bordered table-condensed table-hover">
     <tr>
         <th>
             @Html.ActionLink("FirstName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "FirstName", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })

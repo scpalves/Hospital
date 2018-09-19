@@ -118,10 +118,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -166,6 +169,7 @@
     <Compile Include="Controllers\EnfermeiroController.cs" />
     <Compile Include="Controllers\ExamesController.cs" />
     <Compile Include="Controllers\MedicoController.cs" />
+    <Compile Include="Controllers\PacienteController.cs" />
     <Compile Include="Controllers\PrescricaoController.cs" />
     <Compile Include="Controllers\ServicosController.cs" />
     <Compile Include="Controllers\TratamentoController.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="Models\Paciente.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PacienteCrud.cs" />
     <Compile Include="Models\Prescricao.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -233,6 +238,7 @@
     <Compile Include="ViewModel\EnfermeiroViewModel.cs" />
     <Compile Include="ViewModel\ExamesViewModel.cs" />
     <Compile Include="ViewModel\MedicoViewModel.cs" />
+    <Compile Include="ViewModel\PacienteViewModel.cs" />
     <Compile Include="ViewModel\PrescricaoViewModel.cs" />
     <Compile Include="ViewModel\ServicosViewModel.cs" />
     <Compile Include="ViewModel\TratamentoViewModel.cs" />
@@ -270,6 +276,9 @@
     <Content Include="Views\Cama\Index.cshtml" />
     <Content Include="Views\Cama\CamaForm.cshtml" />
     <Content Include="Views\Cama\Details.cshtml" />
+    <Content Include="Views\Paciente\Index.cshtml" />
+    <Content Include="Views\Paciente\PacienteForm.cshtml" />
+    <Content Include="Views\Paciente\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

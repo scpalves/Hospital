@@ -18,7 +18,6 @@ namespace Hospital.Models
         public HospitalEntities()
             : base("name=HospitalEntities")
         {
-            //this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
