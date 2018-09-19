@@ -15,21 +15,29 @@
     @Html.ActionLink("Todos", "AllEnfermeiros", "Enfermeiro", null, new { @class = "btn btn-primary" })
 </p>
 <br />
+@using (Html.BeginForm("Index", "Enfermeiro", FormMethod.Get))
+{
 
+	<div class="form-actions">
+		<h4>Pesquisar Enfermeiro:</h4> @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+		<button type="submit" class="btn btn-primary">Pesquisar </button>
+
+	</div>
+}
 <table class="table table-hover">
     <tr>
         <th>
-            @Html.ActionLink("FirstName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "FirstName", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+            @Html.ActionLink("FirstName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "FirstName", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("LastName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "LastName", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+            @Html.ActionLink("LastName", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "LastName", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Email", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Email", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+            @Html.ActionLink("Email", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Email", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
 
         </th>
         <th>
-            @Html.ActionLink("Contact", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Contact", page = (ViewBag.Page == null ? "1" : ViewBag.Page) })
+            @Html.ActionLink("Contact", "Index", new { SortOrder = (ViewBag.SortOrder == null ? "Asc" : (ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")), SortBy = "Contact", page = (ViewBag.Page == null ? "1" : ViewBag.Page), currentFilter = ViewBag.CurrentFilter })
 
         </th>
 
