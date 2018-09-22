@@ -70,6 +70,7 @@
           <Property Name="DiasInternamento" Type="int" Nullable="false" />
           <Property Name="DataInternamento" Type="datetime" />
           <Property Name="Preco" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NomeInternamento" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -449,6 +450,7 @@
           <NavigationProperty Name="Enfermeiro" Relationship="Self.FK_Internamento_Enfermeiro" FromRole="Internamento" ToRole="Enfermeiro" />
           <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Internamento" FromRole="Internamento" ToRole="Fatura" />
           <NavigationProperty Name="Tratamento" Relationship="Self.FK_Internamento_Tratamento" FromRole="Internamento" ToRole="Tratamento" />
+          <Property Name="NomeInternamento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -815,6 +817,7 @@
           <EntitySetMapping Name="Internamento">
             <EntityTypeMapping TypeName="HospitalModel.Internamento">
               <MappingFragment StoreEntitySet="Internamento">
+                <ScalarProperty Name="NomeInternamento" ColumnName="NomeInternamento" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdTratamento" ColumnName="IdTratamento" />
                 <ScalarProperty Name="IdCama" ColumnName="IdCama" />

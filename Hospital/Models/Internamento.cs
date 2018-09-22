@@ -28,6 +28,7 @@ namespace Hospital.Models
         public int DiasInternamento { get; set; }
         public Nullable<System.DateTime> DataInternamento { get; set; }
         public decimal Preco { get; set; }
+        public string NomeInternamento { get; set; }
     
         public virtual Cama Cama { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

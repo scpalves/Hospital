@@ -116,6 +116,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -166,6 +167,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CamaController.cs" />
+    <Compile Include="Controllers\ConsultaController.cs" />
     <Compile Include="Controllers\EnfermeiroController.cs" />
     <Compile Include="Controllers\ExamesController.cs" />
     <Compile Include="Controllers\MedicoController.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Models\Consulta.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConsultaCrud.cs" />
     <Compile Include="Models\Enfermeiro.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -235,6 +238,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CamaViewModel.cs" />
+    <Compile Include="ViewModel\ConsultaPacienteViewModel.cs" />
+    <Compile Include="ViewModel\ConsultaViewModel.cs" />
     <Compile Include="ViewModel\EnfermeiroViewModel.cs" />
     <Compile Include="ViewModel\ExamesViewModel.cs" />
     <Compile Include="ViewModel\MedicoViewModel.cs" />
@@ -279,6 +284,8 @@
     <Content Include="Views\Paciente\Index.cshtml" />
     <Content Include="Views\Paciente\PacienteForm.cshtml" />
     <Content Include="Views\Paciente\Details.cshtml" />
+    <Content Include="Views\Consulta\_ConsultaList.cshtml" />
+    <Content Include="Views\Consulta\ConsultaForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
