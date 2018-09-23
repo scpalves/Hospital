@@ -26,11 +26,9 @@ namespace Hospital.Models
         }
     
         public virtual DbSet<Cama> Cama { get; set; }
-        public virtual DbSet<Consulta> Consulta { get; set; }
         public virtual DbSet<Enfermeiro> Enfermeiro { get; set; }
         public virtual DbSet<Exame> Exame { get; set; }
         public virtual DbSet<Fatura> Fatura { get; set; }
-        public virtual DbSet<Internamento> Internamento { get; set; }
         public virtual DbSet<Medico> Medico { get; set; }
         public virtual DbSet<Paciente> Paciente { get; set; }
         public virtual DbSet<Prescricao> Prescricao { get; set; }
@@ -38,5 +36,7 @@ namespace Hospital.Models
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Tratamento> Tratamento { get; set; }
         public virtual DbSet<Utilizador> Utilizador { get; set; }
+        public virtual DbSet<Consulta> Consulta { get; set; }
+        public virtual DbSet<Internamento> Internamento { get; set; }
     }
 }

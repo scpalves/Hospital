@@ -17,7 +17,6 @@ namespace Hospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Internamento()
         {
-            this.Consulta = new HashSet<Consulta>();
             this.Fatura = new HashSet<Fatura>();
         }
     
@@ -29,10 +28,10 @@ namespace Hospital.Models
         public Nullable<System.DateTime> DataInternamento { get; set; }
         public decimal Preco { get; set; }
         public string NomeInternamento { get; set; }
+        public Nullable<int> IdConsulta { get; set; }
     
         public virtual Cama Cama { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Consulta> Consulta { get; set; }
+        public virtual Consulta Consulta { get; set; }
         public virtual Enfermeiro Enfermeiro { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Fatura> Fatura { get; set; }
