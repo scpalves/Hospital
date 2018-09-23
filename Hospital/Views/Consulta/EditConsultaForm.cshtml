@@ -1,0 +1,55 @@
+﻿@model Hospital.ViewModel.ConsultaViewModel
+@{
+	ViewBag.Title = Model.Title;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@Model.Title</h2>
+
+
+
+@using (@Html.BeginForm("SaveEdit", "Consulta"))
+{
+
+	@Html.ValidationSummary(true, "Resolva os seguintes erros")
+
+
+
+	<div class="form-group">
+		@Html.LabelFor(m => m.IdExames)
+		@Html.DropDownListFor(m => m.IdExames, new SelectList(Model.exame, "Id", "Name"), "Select Service Type", new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.IdExames)
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.IdPrescricao)
+		@Html.DropDownListFor(m => m.IdPrescricao, new SelectList(Model.prescricao, "Id", "Nome"), "Select Service Type", new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.IdPrescricao)
+	</div>
+
+
+	<div class="form-group">
+		@Html.LabelFor(m => m.Sintomas)
+		@Html.TextBoxFor(m => m.Sintomas, new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.Sintomas)
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Diagnostico)
+		@Html.TextBoxFor(m => m.Diagnostico, new { @class = "form-control" })
+		@Html.ValidationMessageFor(m => m.Diagnostico)
+	</div>
+
+
+
+	@Html.HiddenFor(m => m.Id)
+
+
+	@Html.HiddenFor(m => m.IdPaciente)
+
+
+	@Html.AntiForgeryToken()
+	<button type="submit" class="btn btn-primary">
+		Save
+	</button>
+
+}

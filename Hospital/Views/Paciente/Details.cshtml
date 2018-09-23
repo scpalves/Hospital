@@ -2,12 +2,11 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutPaciente.cshtml";
 }
 
-<h2>Details</h2>
-
-    <h4>Paciente</h4>
+<h3>Informações Paciente</h3>
+<br/>
 
 <div class="pull-left">
     <dl class="dl-horizontal">
@@ -66,39 +65,20 @@
         </dd>
     </dl>
 </div>
-<hr />
 
-<div class="dl-horizontal">
-    <div>
+
+<div class="pull-right">
+    <div class="dl-horizontal">
         <p>
             @Html.ActionLink("Nova Consulta", "New", "Consulta", new Hospital.Models.Consulta { Id = Model.Id }, new { @class = "btn btn-warning" })
-
-
         </p>
+		
+			@Html.Action("Index", "Consulta", new Hospital.Models.Consulta { Id = Model.Id })
+		
+    </div>
 
-    </div>
-    <div>
-        @Html.Action("Index", "Consulta", new Hospital.Models.Consulta { Id = Model.Id })
-    </div>
 </div>
 
-
-
-
-        <hr />
-    @*<h4>Outras Informações</h4>
-
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Contact)
-        </dd>
-    </dl>
-
-    <hr />*@
         <div  class="pull-left">
             <p>
                 @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

@@ -203,7 +203,7 @@ namespace Hospital.Controllers
                 pacienteInBD.GrupoSanguineo = paciente.GrupoSanguineo;
                 pacienteInBD.Address = paciente.Address;
                 pacienteInBD.Localidade = paciente.Localidade;
-                pacienteInBD.DataNascimento = paciente.DataNascimento;
+				pacienteInBD.DataNascimento = paciente.DataNascimento;
             }
 
             _context.SaveChanges();

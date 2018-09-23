@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cama">
           <Key>
             <PropertyRef Name="Id" />
@@ -362,7 +362,8 @@
             <End Role="Internamento" EntitySet="Internamento" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HospitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -375,7 +376,25 @@
           <Property Name="IdServico" Type="Int32" />
           <Property Name="TotalCamas" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Servicos" Relationship="Self.FK_Cama_Servicos" FromRole="Cama" ToRole="Servicos" />
-          <NavigationProperty Name="Internamento" Relationship="HospitalModel.FK_Internamento_Cama" FromRole="Cama" ToRole="Internamento" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Internamento_Cama" FromRole="Cama" ToRole="Internamento" />
+        </EntityType>
+        <EntityType Name="Consulta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPaciente" Type="Int32" />
+          <Property Name="IdMedico" Type="Int32" />
+          <Property Name="IdExames" Type="Int32" />
+          <Property Name="IdPrescricao" Type="Int32" />
+          <Property Name="Sintomas" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DataConsulta" Type="DateTime" Precision="3" />
+          <Property Name="Diagnostico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Exame" Relationship="Self.FK_Consulta_Exame" FromRole="Consulta" ToRole="Exame" />
+          <NavigationProperty Name="Medico" Relationship="Self.FK_Consulta_Medico" FromRole="Consulta" ToRole="Medico" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK_Consulta_Paciente" FromRole="Consulta" ToRole="Paciente" />
+          <NavigationProperty Name="Prescricao" Relationship="Self.FK_Consulta_Prescricao" FromRole="Consulta" ToRole="Prescricao" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Internamento_Consulta" FromRole="Consulta" ToRole="Internamento" />
         </EntityType>
         <EntityType Name="Enfermeiro">
           <Key>
@@ -387,7 +406,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Boolean" />
-          <NavigationProperty Name="Internamento" Relationship="HospitalModel.FK_Internamento_Enfermeiro" FromRole="Enfermeiro" ToRole="Internamento" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Internamento_Enfermeiro" FromRole="Enfermeiro" ToRole="Internamento" />
         </EntityType>
         <EntityType Name="Exame">
           <Key>
@@ -396,8 +415,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Preco" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Exame" FromRole="Exame" ToRole="Consulta" />
           <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Exame" FromRole="Exame" ToRole="Fatura" />
-          <NavigationProperty Name="Consulta" Relationship="HospitalModel.FK_Consulta_Exame" FromRole="Exame" ToRole="Consulta" />
         </EntityType>
         <EntityType Name="Fatura">
           <Key>
@@ -411,9 +430,28 @@
           <Property Name="DataFatura" Type="DateTime" Precision="3" />
           <Property Name="IdInternamento" Type="Int32" />
           <NavigationProperty Name="Exame" Relationship="Self.FK_Fatura_Exame" FromRole="Fatura" ToRole="Exame" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Fatura_Internamento" FromRole="Fatura" ToRole="Internamento" />
           <NavigationProperty Name="Paciente" Relationship="Self.FK_Fatura_Paciente" FromRole="Fatura" ToRole="Paciente" />
           <NavigationProperty Name="Tratamento" Relationship="Self.FK_Fatura_Tratamento" FromRole="Fatura" ToRole="Tratamento" />
-          <NavigationProperty Name="Internamento" Relationship="HospitalModel.FK_Fatura_Internamento" FromRole="Fatura" ToRole="Internamento" />
+        </EntityType>
+        <EntityType Name="Internamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTratamento" Type="Int32" />
+          <Property Name="IdCama" Type="Int32" />
+          <Property Name="IdEnfermeiro" Type="Int32" />
+          <Property Name="DiasInternamento" Type="Int32" Nullable="false" />
+          <Property Name="DataInternamento" Type="DateTime" Precision="3" />
+          <Property Name="Preco" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NomeInternamento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdConsulta" Type="Int32" />
+          <NavigationProperty Name="Cama" Relationship="Self.FK_Internamento_Cama" FromRole="Internamento" ToRole="Cama" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Internamento_Consulta" FromRole="Internamento" ToRole="Consulta" />
+          <NavigationProperty Name="Enfermeiro" Relationship="Self.FK_Internamento_Enfermeiro" FromRole="Internamento" ToRole="Enfermeiro" />
+          <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Internamento" FromRole="Internamento" ToRole="Fatura" />
+          <NavigationProperty Name="Tratamento" Relationship="Self.FK_Internamento_Tratamento" FromRole="Internamento" ToRole="Tratamento" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -425,7 +463,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Boolean" />
-          <NavigationProperty Name="Consulta" Relationship="HospitalModel.FK_Consulta_Medico" FromRole="Medico" ToRole="Consulta" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Medico" FromRole="Medico" ToRole="Consulta" />
         </EntityType>
         <EntityType Name="Paciente">
           <Key>
@@ -440,9 +478,9 @@
           <Property Name="GrupoSanguineo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Localidade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Paciente" FromRole="Paciente" ToRole="Fatura" />
           <Property Name="DataNascimento" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Consulta" Relationship="HospitalModel.FK_Consulta_Paciente" FromRole="Paciente" ToRole="Consulta" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Paciente" FromRole="Paciente" ToRole="Consulta" />
+          <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Paciente" FromRole="Paciente" ToRole="Fatura" />
         </EntityType>
         <EntityType Name="Prescricao">
           <Key>
@@ -450,7 +488,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Consulta" Relationship="HospitalModel.FK_Consulta_Prescricao" FromRole="Prescricao" ToRole="Consulta" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Prescricao" FromRole="Prescricao" ToRole="Consulta" />
         </EntityType>
         <EntityType Name="Servicos">
           <Key>
@@ -478,7 +516,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Preco" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Tratamento" FromRole="Tratamento" ToRole="Fatura" />
-          <NavigationProperty Name="Internamento" Relationship="HospitalModel.FK_Internamento_Tratamento" FromRole="Tratamento" ToRole="Internamento" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Internamento_Tratamento" FromRole="Tratamento" ToRole="Internamento" />
         </EntityType>
         <EntityType Name="Utilizador">
           <Key>
@@ -501,6 +539,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Internamento_Cama">
+          <End Role="Cama" Type="Self.Cama" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cama">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdCama" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consulta_Exame">
+          <End Role="Exame" Type="Self.Exame" Multiplicity="0..1" />
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exame">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Consulta">
+              <PropertyRef Name="IdExames" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consulta_Medico">
+          <End Role="Medico" Type="Self.Medico" Multiplicity="0..1" />
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medico">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Consulta">
+              <PropertyRef Name="IdMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consulta_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="0..1" />
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Consulta">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Consulta_Prescricao">
+          <End Role="Prescricao" Type="Self.Prescricao" Multiplicity="0..1" />
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prescricao">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Consulta">
+              <PropertyRef Name="IdPrescricao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Internamento_Consulta">
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consulta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdConsulta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Internamento_Enfermeiro">
+          <End Role="Enfermeiro" Type="Self.Enfermeiro" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enfermeiro">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdEnfermeiro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Fatura_Exame">
           <End Role="Exame" Type="Self.Exame" Multiplicity="0..1" />
           <End Role="Fatura" Type="Self.Fatura" Multiplicity="*" />
@@ -510,6 +632,18 @@
             </Principal>
             <Dependent Role="Fatura">
               <PropertyRef Name="IdExame" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fatura_Internamento">
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="0..1" />
+          <End Role="Fatura" Type="Self.Fatura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Internamento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Fatura">
+              <PropertyRef Name="IdInternamento" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -537,11 +671,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Internamento_Tratamento">
+          <End Role="Tratamento" Type="Self.Tratamento" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tratamento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdTratamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="HospitalEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cama" EntityType="Self.Cama" />
+          <EntitySet Name="Consulta" EntityType="Self.Consulta" />
           <EntitySet Name="Enfermeiro" EntityType="Self.Enfermeiro" />
           <EntitySet Name="Exame" EntityType="Self.Exame" />
           <EntitySet Name="Fatura" EntityType="Self.Fatura" />
+          <EntitySet Name="Internamento" EntityType="Self.Internamento" />
           <EntitySet Name="Medico" EntityType="Self.Medico" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" />
           <EntitySet Name="Prescricao" EntityType="Self.Prescricao" />
@@ -553,8 +701,40 @@
             <End Role="Servicos" EntitySet="Servicos" />
             <End Role="Cama" EntitySet="Cama" />
           </AssociationSet>
+          <AssociationSet Name="FK_Internamento_Cama" Association="Self.FK_Internamento_Cama">
+            <End Role="Cama" EntitySet="Cama" />
+            <End Role="Internamento" EntitySet="Internamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consulta_Exame" Association="Self.FK_Consulta_Exame">
+            <End Role="Exame" EntitySet="Exame" />
+            <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consulta_Medico" Association="Self.FK_Consulta_Medico">
+            <End Role="Medico" EntitySet="Medico" />
+            <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consulta_Paciente" Association="Self.FK_Consulta_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Consulta_Prescricao" Association="Self.FK_Consulta_Prescricao">
+            <End Role="Prescricao" EntitySet="Prescricao" />
+            <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Internamento_Consulta" Association="Self.FK_Internamento_Consulta">
+            <End Role="Consulta" EntitySet="Consulta" />
+            <End Role="Internamento" EntitySet="Internamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Internamento_Enfermeiro" Association="Self.FK_Internamento_Enfermeiro">
+            <End Role="Enfermeiro" EntitySet="Enfermeiro" />
+            <End Role="Internamento" EntitySet="Internamento" />
+          </AssociationSet>
           <AssociationSet Name="FK_Fatura_Exame" Association="Self.FK_Fatura_Exame">
             <End Role="Exame" EntitySet="Exame" />
+            <End Role="Fatura" EntitySet="Fatura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fatura_Internamento" Association="Self.FK_Fatura_Internamento">
+            <End Role="Internamento" EntitySet="Internamento" />
             <End Role="Fatura" EntitySet="Fatura" />
           </AssociationSet>
           <AssociationSet Name="FK_Fatura_Paciente" Association="Self.FK_Fatura_Paciente">
@@ -565,190 +745,11 @@
             <End Role="Tratamento" EntitySet="Tratamento" />
             <End Role="Fatura" EntitySet="Fatura" />
           </AssociationSet>
-          <EntitySet Name="Consulta" EntityType="HospitalModel.Consulta" />
-          <EntitySet Name="Internamento" EntityType="HospitalModel.Internamento" />
-          <AssociationSet Name="FK_Internamento_Cama" Association="HospitalModel.FK_Internamento_Cama">
-            <End Role="Cama" EntitySet="Cama" />
-            <End Role="Internamento" EntitySet="Internamento" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Exame" Association="HospitalModel.FK_Consulta_Exame">
-            <End Role="Exame" EntitySet="Exame" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Medico" Association="HospitalModel.FK_Consulta_Medico">
-            <End Role="Medico" EntitySet="Medico" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Paciente" Association="HospitalModel.FK_Consulta_Paciente">
-            <End Role="Paciente" EntitySet="Paciente" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Internamento_Consulta" Association="HospitalModel.FK_Internamento_Consulta">
-            <End Role="Consulta" EntitySet="Consulta" />
-            <End Role="Internamento" EntitySet="Internamento" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Internamento_Enfermeiro" Association="HospitalModel.FK_Internamento_Enfermeiro">
-            <End Role="Enfermeiro" EntitySet="Enfermeiro" />
-            <End Role="Internamento" EntitySet="Internamento" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Fatura_Internamento" Association="HospitalModel.FK_Fatura_Internamento">
-            <End Role="Internamento" EntitySet="Internamento" />
-            <End Role="Fatura" EntitySet="Fatura" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Internamento_Tratamento" Association="HospitalModel.FK_Internamento_Tratamento">
+          <AssociationSet Name="FK_Internamento_Tratamento" Association="Self.FK_Internamento_Tratamento">
             <End Role="Tratamento" EntitySet="Tratamento" />
             <End Role="Internamento" EntitySet="Internamento" />
           </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Prescricao" Association="HospitalModel.FK_Consulta_Prescricao">
-            <End Role="Prescricao" EntitySet="Prescricao" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Consulta">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdPaciente" Type="Int32" />
-          <Property Name="IdMedico" Type="Int32" />
-          <Property Name="IdExames" Type="Int32" />
-          <Property Name="IdPrescricao" Type="Int32" />
-          <Property Name="Sintomas" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DataConsulta" Type="DateTime" Precision="3" />
-          <Property Name="Diagnostico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Exame" Relationship="HospitalModel.FK_Consulta_Exame" FromRole="Consulta" ToRole="Exame" />
-          <NavigationProperty Name="Medico" Relationship="HospitalModel.FK_Consulta_Medico" FromRole="Consulta" ToRole="Medico" />
-          <NavigationProperty Name="Paciente" Relationship="HospitalModel.FK_Consulta_Paciente" FromRole="Consulta" ToRole="Paciente" />
-          <NavigationProperty Name="Internamento" Relationship="HospitalModel.FK_Internamento_Consulta" FromRole="Consulta" ToRole="Internamento" />
-          <NavigationProperty Name="Prescricao" Relationship="HospitalModel.FK_Consulta_Prescricao" FromRole="Consulta" ToRole="Prescricao" />
-        </EntityType>
-        <EntityType Name="Internamento">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdTratamento" Type="Int32" />
-          <Property Name="IdCama" Type="Int32" />
-          <Property Name="IdEnfermeiro" Type="Int32" />
-          <Property Name="DiasInternamento" Type="Int32" Nullable="false" />
-          <Property Name="DataInternamento" Type="DateTime" Precision="3" />
-          <Property Name="Preco" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="NomeInternamento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IdConsulta" Type="Int32" />
-          <NavigationProperty Name="Cama" Relationship="HospitalModel.FK_Internamento_Cama" FromRole="Internamento" ToRole="Cama" />
-          <NavigationProperty Name="Consulta" Relationship="HospitalModel.FK_Internamento_Consulta" FromRole="Internamento" ToRole="Consulta" />
-          <NavigationProperty Name="Enfermeiro" Relationship="HospitalModel.FK_Internamento_Enfermeiro" FromRole="Internamento" ToRole="Enfermeiro" />
-          <NavigationProperty Name="Fatura" Relationship="HospitalModel.FK_Fatura_Internamento" FromRole="Internamento" ToRole="Fatura" />
-          <NavigationProperty Name="Tratamento" Relationship="HospitalModel.FK_Internamento_Tratamento" FromRole="Internamento" ToRole="Tratamento" />
-        </EntityType>
-        <Association Name="FK_Internamento_Cama">
-          <End Type="HospitalModel.Cama" Role="Cama" Multiplicity="0..1" />
-          <End Type="HospitalModel.Internamento" Role="Internamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cama">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Internamento">
-              <PropertyRef Name="IdCama" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consulta_Exame">
-          <End Type="HospitalModel.Exame" Role="Exame" Multiplicity="0..1" />
-          <End Type="HospitalModel.Consulta" Role="Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Exame">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdExames" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consulta_Medico">
-          <End Type="HospitalModel.Medico" Role="Medico" Multiplicity="0..1" />
-          <End Type="HospitalModel.Consulta" Role="Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Medico">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdMedico" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consulta_Paciente">
-          <End Type="HospitalModel.Paciente" Role="Paciente" Multiplicity="0..1" />
-          <End Type="HospitalModel.Consulta" Role="Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paciente">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdPaciente" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Internamento_Consulta">
-          <End Type="HospitalModel.Consulta" Role="Consulta" Multiplicity="0..1" />
-          <End Type="HospitalModel.Internamento" Role="Internamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Consulta">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Internamento">
-              <PropertyRef Name="IdConsulta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Internamento_Enfermeiro">
-          <End Type="HospitalModel.Enfermeiro" Role="Enfermeiro" Multiplicity="0..1" />
-          <End Type="HospitalModel.Internamento" Role="Internamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Enfermeiro">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Internamento">
-              <PropertyRef Name="IdEnfermeiro" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Fatura_Internamento">
-          <End Type="HospitalModel.Internamento" Role="Internamento" Multiplicity="0..1" />
-          <End Type="HospitalModel.Fatura" Role="Fatura" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Internamento">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Fatura">
-              <PropertyRef Name="IdInternamento" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Internamento_Tratamento">
-          <End Type="HospitalModel.Tratamento" Role="Tratamento" Multiplicity="0..1" />
-          <End Type="HospitalModel.Internamento" Role="Internamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tratamento">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Internamento">
-              <PropertyRef Name="IdTratamento" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consulta_Prescricao">
-          <End Type="HospitalModel.Prescricao" Role="Prescricao" Multiplicity="0..1" />
-          <End Type="HospitalModel.Consulta" Role="Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Prescricao">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdPrescricao" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -762,6 +763,20 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IdServico" ColumnName="IdServico" />
                 <ScalarProperty Name="TotalCamas" ColumnName="TotalCamas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Consulta">
+            <EntityTypeMapping TypeName="HospitalModel.Consulta">
+              <MappingFragment StoreEntitySet="Consulta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="IdMedico" ColumnName="IdMedico" />
+                <ScalarProperty Name="IdExames" ColumnName="IdExames" />
+                <ScalarProperty Name="IdPrescricao" ColumnName="IdPrescricao" />
+                <ScalarProperty Name="Sintomas" ColumnName="Sintomas" />
+                <ScalarProperty Name="DataConsulta" ColumnName="DataConsulta" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -799,6 +814,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Internamento">
+            <EntityTypeMapping TypeName="HospitalModel.Internamento">
+              <MappingFragment StoreEntitySet="Internamento">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdTratamento" ColumnName="IdTratamento" />
+                <ScalarProperty Name="IdCama" ColumnName="IdCama" />
+                <ScalarProperty Name="IdEnfermeiro" ColumnName="IdEnfermeiro" />
+                <ScalarProperty Name="DiasInternamento" ColumnName="DiasInternamento" />
+                <ScalarProperty Name="DataInternamento" ColumnName="DataInternamento" />
+                <ScalarProperty Name="Preco" ColumnName="Preco" />
+                <ScalarProperty Name="NomeInternamento" ColumnName="NomeInternamento" />
+                <ScalarProperty Name="IdConsulta" ColumnName="IdConsulta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Medico">
             <EntityTypeMapping TypeName="HospitalModel.Medico">
               <MappingFragment StoreEntitySet="Medico">
@@ -814,7 +844,6 @@
           <EntitySetMapping Name="Paciente">
             <EntityTypeMapping TypeName="HospitalModel.Paciente">
               <MappingFragment StoreEntitySet="Paciente">
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -824,6 +853,7 @@
                 <ScalarProperty Name="GrupoSanguineo" ColumnName="GrupoSanguineo" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Localidade" ColumnName="Localidade" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -870,35 +900,6 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Consulta">
-            <EntityTypeMapping TypeName="HospitalModel.Consulta">
-              <MappingFragment StoreEntitySet="Consulta">
-                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
-                <ScalarProperty Name="DataConsulta" ColumnName="DataConsulta" />
-                <ScalarProperty Name="Sintomas" ColumnName="Sintomas" />
-                <ScalarProperty Name="IdPrescricao" ColumnName="IdPrescricao" />
-                <ScalarProperty Name="IdExames" ColumnName="IdExames" />
-                <ScalarProperty Name="IdMedico" ColumnName="IdMedico" />
-                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Internamento">
-            <EntityTypeMapping TypeName="HospitalModel.Internamento">
-              <MappingFragment StoreEntitySet="Internamento">
-                <ScalarProperty Name="IdConsulta" ColumnName="IdConsulta" />
-                <ScalarProperty Name="NomeInternamento" ColumnName="NomeInternamento" />
-                <ScalarProperty Name="Preco" ColumnName="Preco" />
-                <ScalarProperty Name="DataInternamento" ColumnName="DataInternamento" />
-                <ScalarProperty Name="DiasInternamento" ColumnName="DiasInternamento" />
-                <ScalarProperty Name="IdEnfermeiro" ColumnName="IdEnfermeiro" />
-                <ScalarProperty Name="IdCama" ColumnName="IdCama" />
-                <ScalarProperty Name="IdTratamento" ColumnName="IdTratamento" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

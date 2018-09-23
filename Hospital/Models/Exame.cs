@@ -17,8 +17,8 @@ namespace Hospital.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Exame()
         {
-            this.Fatura = new HashSet<Fatura>();
             this.Consulta = new HashSet<Consulta>();
+            this.Fatura = new HashSet<Fatura>();
         }
     
         public int Id { get; set; }
@@ -26,8 +26,8 @@ namespace Hospital.Models
         public decimal Preco { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Fatura> Fatura { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Consulta> Consulta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Fatura> Fatura { get; set; }
     }
 }

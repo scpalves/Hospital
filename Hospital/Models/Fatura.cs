@@ -23,8 +23,8 @@ namespace Hospital.Models
         public Nullable<int> IdInternamento { get; set; }
     
         public virtual Exame Exame { get; set; }
+        public virtual Internamento Internamento { get; set; }
         public virtual Paciente Paciente { get; set; }
         public virtual Tratamento Tratamento { get; set; }
-        public virtual Internamento Internamento { get; set; }
     }
 }

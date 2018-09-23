@@ -32,8 +32,8 @@ namespace Hospital.Models
         public virtual Exame Exame { get; set; }
         public virtual Medico Medico { get; set; }
         public virtual Paciente Paciente { get; set; }
+        public virtual Prescricao Prescricao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Internamento> Internamento { get; set; }
-        public virtual Prescricao Prescricao { get; set; }
     }
 }
