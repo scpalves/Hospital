@@ -14,20 +14,26 @@ namespace Hospital.Models
     
     public partial class Consulta
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Consulta()
+        {
+            this.Internamento = new HashSet<Internamento>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> IdPaciente { get; set; }
         public Nullable<int> IdMedico { get; set; }
         public Nullable<int> IdExames { get; set; }
         public Nullable<int> IdPrescricao { get; set; }
-        public Nullable<int> IdInternamento { get; set; }
         public string Sintomas { get; set; }
         public Nullable<System.DateTime> DataConsulta { get; set; }
         public string Diagnostico { get; set; }
     
         public virtual Exame Exame { get; set; }
-        public virtual Internamento Internamento { get; set; }
         public virtual Medico Medico { get; set; }
         public virtual Paciente Paciente { get; set; }
         public virtual Prescricao Prescricao { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Internamento> Internamento { get; set; }
     }
 }

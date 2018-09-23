@@ -55,12 +55,12 @@ namespace Hospital.ViewModel
             IdMedico = consulta.IdMedico;
             IdExames = consulta.IdExames;
             IdPrescricao = consulta.IdPrescricao;
-            IdInternamento = consulta.IdInternamento;
+            //IdInternamento = consulta.IdInternamento;
             Sintomas = consulta.Sintomas;
             DataConsulta = consulta.DataConsulta;
             Diagnostico = consulta.Diagnostico;
             Exame = consulta.Exame;
-            Internamento = consulta.Internamento;
+            //Internamento = consulta.Internamento;
             Medico = consulta.Medico;
             Paciente = consulta.Paciente;
             Prescricao = consulta.Prescricao;

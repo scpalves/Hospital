@@ -1,21 +1,9 @@
 ﻿@model IEnumerable<Hospital.Models.Consulta>
 
 
-
-@*<p>
-    @Html.ActionLink("Nova Consulta", "New", "Consulta", new Hospital.Models.Consulta { IdPaciente = Model.Id }, new { @class = "btn btn-warning" })
-
-
-</p>*@
-
-
-
-
-<table class="table">
+<table class="table table-responsive table-bordered table-condensed table-hover">
     <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.IdPrescricao)
-        </th>*@
+       
         <th>
             @Html.DisplayNameFor(model => model.DataConsulta)
         </th>
@@ -29,9 +17,9 @@
         <th>
            Nome do Exame
         </th>
-        <th>
+        @*<th>
             Internamento/Nome Cama/Serviço
-        </th>
+        </th>*@
         <th>
          Nome Medico
         </th>
@@ -48,10 +36,7 @@
     {
    
         <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.IdPrescricao)
-            </td>*@
-            <td>
+ <td>
                 @Html.DisplayFor(modelItem => item.DataConsulta)
             </td>
             <td>
@@ -64,10 +49,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Exame.Name)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Internamento.Cama.Name)-
                 @Html.DisplayFor(modelItem => item.Internamento.Cama.Servicos.Nome)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Medico.FirstName)
                 @Html.DisplayFor(modelItem => item.Medico.LastName)
@@ -80,9 +65,7 @@
                 @Html.DisplayFor(modelItem => item.Prescricao.Nome)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id })
             </td>
         </tr>
     }

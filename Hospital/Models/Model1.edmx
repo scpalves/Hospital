@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cama">
           <Key>
             <PropertyRef Name="Id" />
@@ -23,7 +23,6 @@
           <Property Name="IdMedico" Type="int" />
           <Property Name="IdExames" Type="int" />
           <Property Name="IdPrescricao" Type="int" />
-          <Property Name="IdInternamento" Type="int" />
           <Property Name="Sintomas" Type="nvarchar" MaxLength="100" />
           <Property Name="DataConsulta" Type="datetime" />
           <Property Name="Diagnostico" Type="nvarchar" MaxLength="100" />
@@ -71,6 +70,7 @@
           <Property Name="DataInternamento" Type="datetime" />
           <Property Name="Preco" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="NomeInternamento" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdConsulta" Type="int" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -163,18 +163,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Consulta_Internamento">
-          <End Role="Internamento" Type="Self.Internamento" Multiplicity="0..1" />
-          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Internamento">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdInternamento" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Consulta_Medico">
           <End Role="Medico" Type="Self.Medico" Multiplicity="0..1" />
           <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
@@ -207,7 +195,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Consulta">
-              <PropertyRef Name="IdInternamento" />
+              <PropertyRef Name="IdPrescricao" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -271,6 +259,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Internamento_Consulta">
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consulta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdConsulta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Internamento_Enfermeiro">
           <End Role="Enfermeiro" Type="Self.Enfermeiro" Multiplicity="0..1" />
           <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
@@ -317,10 +317,6 @@
             <End Role="Exame" EntitySet="Exame" />
             <End Role="Consulta" EntitySet="Consulta" />
           </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Internamento" Association="Self.FK_Consulta_Internamento">
-            <End Role="Internamento" EntitySet="Internamento" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
           <AssociationSet Name="FK_Consulta_Medico" Association="Self.FK_Consulta_Medico">
             <End Role="Medico" EntitySet="Medico" />
             <End Role="Consulta" EntitySet="Consulta" />
@@ -353,6 +349,10 @@
             <End Role="Cama" EntitySet="Cama" />
             <End Role="Internamento" EntitySet="Internamento" />
           </AssociationSet>
+          <AssociationSet Name="FK_Internamento_Consulta" Association="Self.FK_Internamento_Consulta">
+            <End Role="Consulta" EntitySet="Consulta" />
+            <End Role="Internamento" EntitySet="Internamento" />
+          </AssociationSet>
           <AssociationSet Name="FK_Internamento_Enfermeiro" Association="Self.FK_Internamento_Enfermeiro">
             <End Role="Enfermeiro" EntitySet="Enfermeiro" />
             <End Role="Internamento" EntitySet="Internamento" />
@@ -362,7 +362,8 @@
             <End Role="Internamento" EntitySet="Internamento" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HospitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -386,15 +387,14 @@
           <Property Name="IdMedico" Type="Int32" />
           <Property Name="IdExames" Type="Int32" />
           <Property Name="IdPrescricao" Type="Int32" />
-          <Property Name="IdInternamento" Type="Int32" />
           <Property Name="Sintomas" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DataConsulta" Type="DateTime" Precision="3" />
           <Property Name="Diagnostico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Exame" Relationship="Self.FK_Consulta_Exame" FromRole="Consulta" ToRole="Exame" />
-          <NavigationProperty Name="Internamento" Relationship="Self.FK_Consulta_Internamento" FromRole="Consulta" ToRole="Internamento" />
           <NavigationProperty Name="Medico" Relationship="Self.FK_Consulta_Medico" FromRole="Consulta" ToRole="Medico" />
           <NavigationProperty Name="Paciente" Relationship="Self.FK_Consulta_Paciente" FromRole="Consulta" ToRole="Paciente" />
           <NavigationProperty Name="Prescricao" Relationship="Self.FK_Consulta_Prescricao" FromRole="Consulta" ToRole="Prescricao" />
+          <NavigationProperty Name="Internamento" Relationship="Self.FK_Internamento_Consulta" FromRole="Consulta" ToRole="Internamento" />
         </EntityType>
         <EntityType Name="Enfermeiro">
           <Key>
@@ -445,12 +445,13 @@
           <Property Name="DiasInternamento" Type="Int32" Nullable="false" />
           <Property Name="DataInternamento" Type="DateTime" Precision="3" />
           <Property Name="Preco" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="NomeInternamento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdConsulta" Type="Int32" />
           <NavigationProperty Name="Cama" Relationship="Self.FK_Internamento_Cama" FromRole="Internamento" ToRole="Cama" />
-          <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Internamento" FromRole="Internamento" ToRole="Consulta" />
+          <NavigationProperty Name="Consulta" Relationship="Self.FK_Internamento_Consulta" FromRole="Internamento" ToRole="Consulta" />
           <NavigationProperty Name="Enfermeiro" Relationship="Self.FK_Internamento_Enfermeiro" FromRole="Internamento" ToRole="Enfermeiro" />
           <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Internamento" FromRole="Internamento" ToRole="Fatura" />
           <NavigationProperty Name="Tratamento" Relationship="Self.FK_Internamento_Tratamento" FromRole="Internamento" ToRole="Tratamento" />
-          <Property Name="NomeInternamento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -477,9 +478,9 @@
           <Property Name="GrupoSanguineo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Localidade" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DataNascimento" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Paciente" FromRole="Paciente" ToRole="Consulta" />
           <NavigationProperty Name="Fatura" Relationship="Self.FK_Fatura_Paciente" FromRole="Paciente" ToRole="Fatura" />
-          <Property Name="DataNascimento" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Prescricao">
           <Key>
@@ -562,18 +563,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Consulta_Internamento">
-          <End Role="Internamento" Type="Self.Internamento" Multiplicity="0..1" />
-          <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Internamento">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Consulta">
-              <PropertyRef Name="IdInternamento" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Consulta_Medico">
           <End Role="Medico" Type="Self.Medico" Multiplicity="0..1" />
           <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
@@ -606,7 +595,19 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Consulta">
-              <PropertyRef Name="IdInternamento" />
+              <PropertyRef Name="IdPrescricao" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Internamento_Consulta">
+          <End Role="Consulta" Type="Self.Consulta" Multiplicity="0..1" />
+          <End Role="Internamento" Type="Self.Internamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consulta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Internamento">
+              <PropertyRef Name="IdConsulta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -708,10 +709,6 @@
             <End Role="Exame" EntitySet="Exame" />
             <End Role="Consulta" EntitySet="Consulta" />
           </AssociationSet>
-          <AssociationSet Name="FK_Consulta_Internamento" Association="Self.FK_Consulta_Internamento">
-            <End Role="Internamento" EntitySet="Internamento" />
-            <End Role="Consulta" EntitySet="Consulta" />
-          </AssociationSet>
           <AssociationSet Name="FK_Consulta_Medico" Association="Self.FK_Consulta_Medico">
             <End Role="Medico" EntitySet="Medico" />
             <End Role="Consulta" EntitySet="Consulta" />
@@ -723,6 +720,10 @@
           <AssociationSet Name="FK_Consulta_Prescricao" Association="Self.FK_Consulta_Prescricao">
             <End Role="Prescricao" EntitySet="Prescricao" />
             <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Internamento_Consulta" Association="Self.FK_Internamento_Consulta">
+            <End Role="Consulta" EntitySet="Consulta" />
+            <End Role="Internamento" EntitySet="Internamento" />
           </AssociationSet>
           <AssociationSet Name="FK_Internamento_Enfermeiro" Association="Self.FK_Internamento_Enfermeiro">
             <End Role="Enfermeiro" EntitySet="Enfermeiro" />
@@ -773,7 +774,6 @@
                 <ScalarProperty Name="IdMedico" ColumnName="IdMedico" />
                 <ScalarProperty Name="IdExames" ColumnName="IdExames" />
                 <ScalarProperty Name="IdPrescricao" ColumnName="IdPrescricao" />
-                <ScalarProperty Name="IdInternamento" ColumnName="IdInternamento" />
                 <ScalarProperty Name="Sintomas" ColumnName="Sintomas" />
                 <ScalarProperty Name="DataConsulta" ColumnName="DataConsulta" />
                 <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
@@ -817,7 +817,6 @@
           <EntitySetMapping Name="Internamento">
             <EntityTypeMapping TypeName="HospitalModel.Internamento">
               <MappingFragment StoreEntitySet="Internamento">
-                <ScalarProperty Name="NomeInternamento" ColumnName="NomeInternamento" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdTratamento" ColumnName="IdTratamento" />
                 <ScalarProperty Name="IdCama" ColumnName="IdCama" />
@@ -825,6 +824,8 @@
                 <ScalarProperty Name="DiasInternamento" ColumnName="DiasInternamento" />
                 <ScalarProperty Name="DataInternamento" ColumnName="DataInternamento" />
                 <ScalarProperty Name="Preco" ColumnName="Preco" />
+                <ScalarProperty Name="NomeInternamento" ColumnName="NomeInternamento" />
+                <ScalarProperty Name="IdConsulta" ColumnName="IdConsulta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -843,7 +844,6 @@
           <EntitySetMapping Name="Paciente">
             <EntityTypeMapping TypeName="HospitalModel.Paciente">
               <MappingFragment StoreEntitySet="Paciente">
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -853,6 +853,7 @@
                 <ScalarProperty Name="GrupoSanguineo" ColumnName="GrupoSanguineo" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Localidade" ColumnName="Localidade" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
